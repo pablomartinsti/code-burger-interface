@@ -9,7 +9,7 @@ display: flex;
 justify-content: center;
 align-items: center;
 `
-export const LoginImage = styled.img`
+export const RegisterImage = styled.img`
 height: 75%;
 
 
@@ -22,6 +22,9 @@ padding: 25px 75px;
 display: flex;
 flex-direction: column;
 
+img{
+    height: 90px;
+}
 
 form{
     display: flex;
@@ -36,7 +39,7 @@ h1{
     line-height: 28px;
     color: #fff;
     text-align: center;
-    margin-top: 100px;
+    margin-top: 10px;
 }
 `
 export const Label = styled.p`
