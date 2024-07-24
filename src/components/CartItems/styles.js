@@ -30,9 +30,26 @@ export const Body = styled.div`
   img {
     border-radius: 10px;
     width: 120px;
+  }
+
+  p {
+    font-size: 16px;
+  }
+
+  .quantity-container {
+    display: flex;
+    gap: 20px;
+
+    button {
+      height: 30px;
+      background: transparent;
+      border: none;
+      font-size: 24px;
+      cursor: pointer;
+    }
 
     p {
-      font-size: 16px;
+      margin-top: 5px;
     }
   }
 `
