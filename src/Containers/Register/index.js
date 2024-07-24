@@ -9,8 +9,10 @@ import Logo from '../../assets/logo.svg'
 import { Container, RegisterImage, ContainerItens, Label, Input, SignInLink, ErrorMessage } from './styles'
 import Button from "../../components/Button";
 import { toast } from "react-toastify";
-import { Link } from "react-router-dom/cjs/react-router-dom.min";
+import { Link, useHistory } from "react-router-dom";
 function Register() {
+
+    const history = useHistory()
 
 
     const schema = yup.object({
@@ -25,6 +27,7 @@ function Register() {
     });
     const onSubmit = async clientData => {
 
+
         try {
 
             const { status } = await api.post('/users', {
@@ -36,6 +39,11 @@ function Register() {
 
             if (status === 201 || status === 200) {
                 toast.success('Cadastro criando com sucesso')
+
+                setTimeout(() =>{
+                    history.push('/login')
+                }, 1000)
+
             }
             else if(status === 409){
                 toast.error("E-mail cadastrado! Faça o login para continuar")

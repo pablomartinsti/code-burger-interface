@@ -12,8 +12,10 @@ import Button from "../../components/Button";
 import { useUser } from "../../hooks/UserContext";
 import api from '../../services/api'
 import { Container, LoginImage, ContainerItens, Label, Input, SignInLink, ErrorMessage } from './styles'
-import { Link } from "react-router-dom/cjs/react-router-dom.min";
+import { useHistory,Link } from "react-router-dom/";
+
 function Login() {
+    const history = useHistory()
 
     const { putUserData } = useUser()
 
@@ -37,9 +39,16 @@ function Login() {
                 success: 'Seja bem-vindo(a)',
                 error: ' Verifique seu e-mail e senha'
             }
+
+            
         )
 
         putUserData(data)
+
+        setTimeout(() =>{
+            history.push('/')
+        }, 1000)
+        
 
     }
 
