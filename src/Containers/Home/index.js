@@ -1,11 +1,12 @@
 import React from 'react'
 import HomeLogo from '../../assets/capaHome.svg'
 import { Container, HomeImg } from './styles'
-import { CategoryCarousel, OffersCarousel } from '../../components'
+import { CategoryCarousel, Header, OffersCarousel } from '../../components'
 
 export function Home() {
   return (
     <Container>
+      <Header />
       <HomeImg src={HomeLogo} alt="logo da home" />
       <CategoryCarousel />
       <OffersCarousel />
