@@ -6,6 +6,10 @@ const CartContext = createContext({})
 export const CartProvider = ({ children }) => {
   const [CartProducts, setCartProducts] = useState([])
 
+  const updateLocalStorage = async products => {
+    await localStorage.setItem('codeburger:cartInfo', JSON.stringify(products))
+  }
+
   const putProductInCart = async product => {
     const cartIndex = CartProducts.findIndex(prd => prd.id === product.id)
 
@@ -24,10 +28,44 @@ export const CartProvider = ({ children }) => {
       setCartProducts(newCartProducts)
     }
 
-    await localStorage.setItem(
-      'codeburger:cartInfo',
-      JSON.stringify(newCartProducts)
-    )
+    await updateLocalStorage(newCartProducts)
+  }
+
+  const deleteProducts = async productId => {
+    const newCart = CartProducts.filter(product => product.id !== productId)
+
+    setCartProducts(newCart)
+
+    await updateLocalStorage(newCart)
+  }
+
+  const increaseProducts = async productId => {
+    const newCart = CartProducts.map(product => {
+      return product.id === productId
+        ? { ...product, quantity: product.quantity + 1 }
+        : product
+    })
+
+    setCartProducts(newCart)
+
+    await updateLocalStorage(newCart)
+  }
+
+  const decreaseProducts = async productId => {
+    const cartIndex = CartProducts.findIndex(pd => pd.id === productId)
+
+    if (CartProducts[cartIndex].quantity > 1) {
+      const newCart = CartProducts.map(product => {
+        return product.id === productId
+          ? { ...product, quantity: product.quantity - 1 }
+          : product
+      })
+      setCartProducts(newCart)
+
+      await updateLocalStorage(newCart)
+    } else {
+      deleteProducts(productId)
+    }
   }
 
   useEffect(() => {
@@ -42,7 +80,15 @@ export const CartProvider = ({ children }) => {
     loadUserData()
   }, [])
   return (
-    <CartContext.Provider value={{ putProductInCart, CartProducts }}>
+    <CartContext.Provider
+      value={{
+        putProductInCart,
+        CartProducts,
+        increaseProducts,
+        decreaseProducts,
+        deleteProducts
+      }}
+    >
       {children}
     </CartContext.Provider>
   )

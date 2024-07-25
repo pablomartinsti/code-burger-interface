@@ -3,9 +3,11 @@ import { useCart } from '../../hooks/CartContext'
 
 import { Container, Header, Body, EmptyCart } from './styles'
 import formatCurrency from '../../Utils/formatCurrency'
+import trash from '../../assets/trash.svg'
 
 export function CartItems() {
-  const { CartProducts } = useCart()
+  const { CartProducts, increaseProducts, decreaseProducts, deleteProducts } =
+    useCart()
   console.log(CartProducts)
 
   return (
@@ -16,6 +18,7 @@ export function CartItems() {
         <p>Preço</p>
         <p style={{ paddingRight: 30 }}>Quantidade</p>
         <p>Total</p>
+        <p>Ecluir</p>
       </Header>
 
       {CartProducts && CartProducts.length > 0 ? (
@@ -25,11 +28,16 @@ export function CartItems() {
             <p>{product.name}</p>
             <p>{formatCurrency(product.price)}</p>
             <div className="quantity-container">
-              <button>-</button>
+              <button onClick={() => decreaseProducts(product.id)}>-</button>
               <p>{product.quantity}</p>
-              <button>+</button>
+              <button onClick={() => increaseProducts(product.id)}>+</button>
             </div>
             <p>{formatCurrency(product.quantity * product.price)}</p>
+            <img
+              className="trash"
+              onClick={() => deleteProducts(product.id)}
+              src={trash}
+            />
           </Body>
         ))
       ) : (

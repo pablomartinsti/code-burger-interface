@@ -10,7 +10,7 @@ export const Container = styled.div`
 
 export const Header = styled.div`
   display: grid;
-  grid-template-columns: repeat(5, 1fr);
+  grid-template-columns: repeat(6, 1fr);
   padding: 10px;
   border-bottom: 1px solid #b5b5b5;
 
@@ -22,7 +22,7 @@ export const Header = styled.div`
 
 export const Body = styled.div`
   display: grid;
-  grid-template-columns: repeat(5, 1fr);
+  grid-template-columns: repeat(6, 1fr);
   width: max-content;
   grid-gap: 10px 15px;
   padding: 10px;
@@ -51,6 +51,9 @@ export const Body = styled.div`
     p {
       margin-top: 5px;
     }
+  }
+  .trash {
+    width: 30px;
   }
 `
 export const EmptyCart = styled.p`
