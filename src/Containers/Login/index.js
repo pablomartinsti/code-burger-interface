@@ -48,7 +48,7 @@ export function Login() {
   })
   const onSubmit = async clientData => {
     const { data } = await toast.promise(
-      api.post('/session', {
+      api.post('session', {
         email: clientData.email,
         password: clientData.password
       }),
@@ -62,7 +62,11 @@ export function Login() {
     putUserData(data)
 
     setTimeout(() => {
-      history.push('/')
+      if (data.admin) {
+        history.push('/pedidos')
+      } else {
+        history.push('/')
+      }
     }, 1000)
   }
 
