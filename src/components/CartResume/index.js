@@ -1,23 +1,37 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 
+import { useCart } from '../../hooks/CartContext'
+import formatCurrency from '../../Utils/formatCurrency'
 import { Container } from './styles'
 import { Button } from '../Button'
 
 export function CartResume() {
+  const [finalPrice, setFinalPrice] = useState(0)
+  const [deliveryTax] = useState(5)
+  const { CartProducts } = useCart()
+
+  useEffect(() => {
+    const sumAllitems = CartProducts.reduce((acc, current) => {
+      return current.price * current.quantity + acc
+    }, 0)
+
+    setFinalPrice(sumAllitems)
+  }, [CartProducts, deliveryTax])
+
   return (
     <div>
       <Container>
         <div className="container-top">
           <h2 className="title">Resumo do pedido</h2>
           <p className="items">Itens</p>
-          <p className="items-price">R$ 10,00</p>
+          <p className="items-price">{formatCurrency(finalPrice)}</p>
           <p className="delivery-tax">Taxa de entrega</p>
-          <p className="delivery-tax-price">R$ 10,00</p>
+          <p className="delivery-tax-price">{formatCurrency(deliveryTax)}</p>
         </div>
 
         <div className="container-bottom">
           <p>Total</p>
-          <p>R$ 10,00</p>
+          <p>{formatCurrency(finalPrice + deliveryTax)}</p>
         </div>
       </Container>
       <Button style={{ width: '100%', marginTop: 30 }}>Finalizar Pedido</Button>
