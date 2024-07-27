@@ -1,4 +1,6 @@
 import React from 'react'
+import ReactSelect from 'react-select'
+import { toast } from 'react-toastify'
 
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
@@ -12,13 +14,35 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Typography from '@mui/material/Typography';
 import PropTypes from 'prop-types';
+import api from '../../../services/api';
 
+import { ProductsImg, ReactSelectStyle } from './style';
+import status from './order-status';
+import Orders from '.';
 
-function Row({row}) {
-  
+function Row({ row, setOrders, orders }) {
+
   const [open, setOpen] = React.useState(false);
+  const [isLoading, setisLoading] = React.useState(false);
 
-  console.log(row)
+  async function setNewStatus(id, status) {
+    setisLoading(true)
+    try {
+      await api.put(`orders/${id}`, { status }, { validateStatus: () => true }
+      )
+      const newOrders = orders.map(order => {
+        return order._id === id ? { ...order, status } : order
+      })
+      setOrders(newOrders)
+
+    } catch (err) {
+      toast.error('Falha no sistema! Tente novamente')
+    } finally {
+      setisLoading(false)
+      toast.success('Status atualizado com sucesso')
+    }
+
+  }
 
   return (
     <React.Fragment>
@@ -37,7 +61,16 @@ function Row({row}) {
         </TableCell>
         <TableCell>{row.name}</TableCell>
         <TableCell>{row.date}</TableCell>
-        <TableCell>{row.status}</TableCell>
+        <TableCell>
+          <ReactSelectStyle options={status.filter(sts => sts.value !== 'Todos')}
+            menuPortalTarget={document.body}
+            placeholder='Status'
+            defaultValue={status.find(option => option.value === row.status) || null}
+            onChange={newStatus => {
+              setNewStatus(row.orderId, newStatus.value)
+            }}
+            isLoading={isLoading} />
+        </TableCell>
       </TableRow>
       <TableRow>
         <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
@@ -63,7 +96,7 @@ function Row({row}) {
                       <TableCell>{productRow.name}</TableCell>
                       <TableCell>{productRow.category}</TableCell>
                       <TableCell>
-                       <img src={productRow.url} alt='imagem do produto'/>
+                        <ProductsImg src={productRow.url} alt='imagem do produto' />
                       </TableCell>
                     </TableRow>
                   ))}
@@ -78,6 +111,8 @@ function Row({row}) {
 }
 
 Row.propTypes = {
+  orders: PropTypes.array,
+  setOrders: PropTypes.func,
   row: PropTypes.shape({
     name: PropTypes.string.isRequired,
     orderId: PropTypes.string.isRequired,
@@ -85,12 +120,12 @@ Row.propTypes = {
     status: PropTypes.string.isRequired,
     products: PropTypes.arrayOf(
       PropTypes.shape({
-        quantity: PropTypes.number.isRequired,
+        quantity: PropTypes.string.isRequired,
         name: PropTypes.string.isRequired,
         category: PropTypes.string.isRequired,
         url: PropTypes.string.isRequired,
       }),
-    ).isRequired 
+    ).isRequired
   }).isRequired
 };
 
