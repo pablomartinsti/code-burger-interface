@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import LogoutIcon from '@mui/icons-material/Logout'
 import listLinks from './menu-list'
 import { useUser } from '../../hooks/UserContext'
@@ -6,7 +7,7 @@ import { useUser } from '../../hooks/UserContext'
 import { Container, ItemContainer, Listlink } from './styles'
 
 
-export function SideMenuAdmin() {
+export function SideMenuAdmin({ path }) {
   const { logout } = useUser()
 
 
@@ -14,7 +15,7 @@ export function SideMenuAdmin() {
     <Container>
       <hr></hr>
       {listLinks.map(item => (
-        <ItemContainer key={item.id}>
+        <ItemContainer key={item.id} isActive={path === item.link}>
           <item.icon className='icon' />
           <Listlink to={item.link}>{item.label}
 
@@ -30,4 +31,7 @@ export function SideMenuAdmin() {
       </ItemContainer>
     </Container>
   )
+}
+SideMenuAdmin.protoTypes = {
+  path: PropTypes.string
 }
