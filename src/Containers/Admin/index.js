@@ -10,7 +10,6 @@ import NewProduct from './NewProducts'
 
 export function Admin({ match: { path } }) {
 
-  console.log(path)
   return (
     <Container>
       <SideMenuAdmin path={path} />

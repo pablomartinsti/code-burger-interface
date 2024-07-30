@@ -12,10 +12,9 @@ import {
   ContainerItens,
   Label,
   Input,
-  SignInLink,
-  ErrorMessage
+  SignInLink
 } from './styles'
-import { Button } from '../../components'
+import { Button, ErrorMessage } from '../../components'
 import { toast } from 'react-toastify'
 import { Link, useHistory } from 'react-router-dom'
 
