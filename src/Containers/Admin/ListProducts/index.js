@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import { useHistory } from 'react-router-dom';
 
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -15,9 +16,11 @@ import CancelIcon from '@mui/icons-material/Cancel';
 import { Container, Img, EditIconStyles } from './styles'
 import api from '../../../services/api'
 import formatCurrency from '../../../Utils/formatCurrency'
+import paths from '../../../constants/paths';
 
 function ListProducts() {
   const [products, setProducts] = useState()
+  const { push } = useHistory()
 
   useEffect(() => {
     async function loadOrders() {
@@ -33,6 +36,11 @@ function ListProducts() {
       return <CheckBoxIcon style={{ color: '#22bb22' }} />
     }
     return <CancelIcon style={{ color: '#cc1717' }} />
+  }
+
+  function editProduct(product) {
+
+    push(paths.EditProduct, { product })
   }
 
 
@@ -62,7 +70,7 @@ function ListProducts() {
                 <TableCell align='center'>{isOffer(product.offer)}</TableCell>
                 <TableCell align='center'><Img src={product.url} alt='imagem-produto' /></TableCell>
                 <TableCell>
-                  <EditIconStyles />
+                  <EditIconStyles onClick={() => editProduct(product)} />
                 </TableCell>
               </TableRow>
             ))}
