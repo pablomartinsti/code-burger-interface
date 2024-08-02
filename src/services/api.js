@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const apiCodeBurger = axios.create({
-    baseURL: 'https://devburger-api.onrender.com'
+    baseURL: 'https://devburger-api-copy-production.up.railway.app/'
 })
 
 apiCodeBurger.interceptors.request.use(async config => {
