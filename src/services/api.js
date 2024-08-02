@@ -1,15 +1,15 @@
 import axios from "axios";
 
 const apiCodeBurger = axios.create({
-    baseURL:'http://localhost:3001'
+    baseURL: 'https://devburger-api.onrender.com'
 })
 
-apiCodeBurger.interceptors.request.use(async config =>{
+apiCodeBurger.interceptors.request.use(async config => {
     const userData = await localStorage.getItem("codeburger:userData")
     const token = userData && JSON.parse(userData).token
-    config.headers.Authorization =`bearer ${token}`
+    config.headers.Authorization = `bearer ${token}`
     return config
-    
+
 })
 
 export default apiCodeBurger
